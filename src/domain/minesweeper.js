@@ -8,8 +8,18 @@ export class Minesweeper {
      * @param {number | null} bombs
      */
     constructor(rows, columns, bombs = null) {
+
         this.rows = rows;
         this.columns = columns;
+
+        this.array = [];
+        for(let i = 0; i < rows; i++){
+            let array2 = [];
+            for(let j = 0; j < columns; j++){
+                array2.push(field.hidden);
+            }
+            this.array.push(array2);
+        }
 
         this.isGameOver = false;
 
@@ -17,7 +27,15 @@ export class Minesweeper {
             this.bombs = this._calculateDefaultBombs();
         else
             this.bombs = bombs;
+
+        this.bombLocation = [];
+            for(let g = 0; g < this.bombs; g++){
+                
+            }
+
+
     }
+
 
     /**
      * TODO: IMPLEMENT THIS
@@ -26,7 +44,9 @@ export class Minesweeper {
      * @private
      * @return {number} amount of bombs
      */
+
     _calculateDefaultBombs() {
+
         return 10;
     }
 
@@ -39,7 +59,9 @@ export class Minesweeper {
      * @return {field}
      */
     getField(x, y) {
-        return field.hidden;
+        return this.array[x][y];
+
+
     }
 
     /**
@@ -72,7 +94,7 @@ export class Minesweeper {
      * @param {number} y
      */
     reveal(x, y) {
-
+        this.array[y][x] = field.visible;
     }
 
     /**
@@ -82,6 +104,15 @@ export class Minesweeper {
      * @param {number} y
      */
     toggleFieldState(x, y) {
+        if(this.array[y][x] === field.hidden){
+            this.array[y][x] = field.flag;
+        } else if (this.array[y][x] === field.flag){
+            this.array[y][x] = field.question_mark;
+        }else if(this.array[y][x] === field.question_mark){
+            this.array[y][x] = field.hidden;
+        }
+
+
     }
 
     /**
@@ -111,3 +142,5 @@ export class Minesweeper {
     }
 
 }
+
+
