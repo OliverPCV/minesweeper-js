@@ -2,6 +2,7 @@ import {field} from "./models/field.js";
 
 export class Minesweeper {
 
+
     /**
      * @param {number} rows
      * @param {number} columns
@@ -30,9 +31,11 @@ export class Minesweeper {
 
         this.bombLocation = [];
             for(let g = 0; g < this.bombs; g++){
-                
+                let x = Math.floor(Math.random() * columns);
+                let y = Math.floor(Math.random() * rows);
+                let coordinate = BombLocation(x, y);
+                this.bombLocation.push(coordinate);
             }
-
 
     }
 
@@ -72,6 +75,9 @@ export class Minesweeper {
      * @return {number}
      */
     getAmountOfSurroundingBombs(x, y) {
+        let coordinate = BombLocation(x, y);
+
+
         return 0;
     }
 
@@ -83,8 +89,11 @@ export class Minesweeper {
      * @return {boolean}
      */
     isBombOnPosition(x, y) {
-        return true;
-    }
+        let coordinate = new BombLocation(x, y);
+        if(this.bombLocation.includes(coordinate)) {
+            return true;
+        }
+   }
 
     /**
      * TODO: IMPLEMENT THIS
@@ -94,7 +103,11 @@ export class Minesweeper {
      * @param {number} y
      */
     reveal(x, y) {
-        this.array[y][x] = field.visible;
+
+        if(this.array[y][x] === field.flag || this.array[y][x] === field.question_mark) {
+            this.array[y][x] !== field.visible;
+        }else
+            this.array[y][x] = field.visible;
     }
 
     /**
@@ -130,6 +143,7 @@ export class Minesweeper {
      * @returns {boolean}
      */
     didLoose() {
+
         return false;
     }
 
