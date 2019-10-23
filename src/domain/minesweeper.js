@@ -1,7 +1,7 @@
 import {field} from "./models/field.js";
+import {BombLocation} from "./models/BombLocation.js";
 
 export class Minesweeper {
-
 
     /**
      * @param {number} rows
@@ -30,13 +30,13 @@ export class Minesweeper {
             this.bombs = bombs;
 
         this.bombLocation = [];
-            for(let g = 0; g < this.bombs; g++){
-                let x = Math.floor(Math.random() * columns);
-                let y = Math.floor(Math.random() * rows);
-                let coordinate = BombLocation(x, y);
-                this.bombLocation.push(coordinate);
-            }
-
+        for(let g = 0; g < this.bombs; g++){
+            let x = Math.floor(Math.random() * columns);
+            let y = Math.floor(Math.random() * rows);
+            let coordinate = new BombLocation(x, y);
+            this.bombLocation.push(coordinate);
+        }
+        console.log(this.bombLocation);
     }
 
 
@@ -49,8 +49,13 @@ export class Minesweeper {
      */
 
     _calculateDefaultBombs() {
+        let defBombs = 15;
+        if (this.rows > 10) {
+            for (let i = 0; i < this.rows; i++)
+                defBombs++;
+        }
+        return defBombs;
 
-        return 10;
     }
 
     /**
@@ -75,8 +80,6 @@ export class Minesweeper {
      * @return {number}
      */
     getAmountOfSurroundingBombs(x, y) {
-        let coordinate = BombLocation(x, y);
-
 
         return 0;
     }
@@ -89,11 +92,13 @@ export class Minesweeper {
      * @return {boolean}
      */
     isBombOnPosition(x, y) {
-        let coordinate = new BombLocation(x, y);
-        if(this.bombLocation.includes(coordinate)) {
-            return true;
+        for(let i = 0; i < this.bombLocation.length; i++) {
+            if (this.bombLocation[i].y === y && this.bombLocation[i].x === x) {
+                return true;
+            }
         }
-   }
+        return false;
+    }
 
     /**
      * TODO: IMPLEMENT THIS
@@ -103,11 +108,15 @@ export class Minesweeper {
      * @param {number} y
      */
     reveal(x, y) {
-
         if(this.array[y][x] === field.flag || this.array[y][x] === field.question_mark) {
             this.array[y][x] !== field.visible;
         }else
             this.array[y][x] = field.visible;
+
+        if (this.isBombOnPosition(x,y) === true) {
+            this.isGameOver = true;
+            this.array[y][x] = field.hidden;
+        }
     }
 
     /**
@@ -134,7 +143,9 @@ export class Minesweeper {
      * @returns {boolean}
      */
     didWin() {
-        return false;
+
+            return false;
+
     }
 
     /**
@@ -143,8 +154,9 @@ export class Minesweeper {
      * @returns {boolean}
      */
     didLoose() {
-
-        return false;
+        if (this.isGameOver === true) {
+            return true;
+        }
     }
 
     /**
@@ -152,9 +164,7 @@ export class Minesweeper {
      * @return {number}
      */
     getRemainingBombCount() {
-        return -1;
+        return this.bombs;
     }
 
 }
-
-

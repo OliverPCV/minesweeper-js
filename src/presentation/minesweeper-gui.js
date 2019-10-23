@@ -78,14 +78,14 @@ export class MinesweeperGUI {
      * @private
      */
     _getIcon(x, y) {
-        if (this.game.isGameOver && this.game.isBombOnPosition(x, y))
+        if (this.game.isGameOver && this.game.isBombOnPosition(y, x))
             return '💣';
         else
-            switch (this.game.getField(x, y)) {
+            switch (this.game.getField(y, x)) {
                 case field.hidden:
                     return '<div class="hidden">&nbsp;</div>';
                 case field.visible:
-                    const amount = this.game.getAmountOfSurroundingBombs(x, y); //Return number
+                    const amount = this.game.getAmountOfSurroundingBombs(y, x); //Return number
                     return `
                         <div class="empty">
                             ${amount === 0 ? ' ' : amount}
@@ -98,5 +98,6 @@ export class MinesweeperGUI {
             }
     }
 }
+
 
 
