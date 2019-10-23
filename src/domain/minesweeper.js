@@ -76,8 +76,16 @@ export class Minesweeper {
      * @return {number}
      */
     getAmountOfSurroundingBombs(x, y) {
+        let surrBomb = 0;
 
-        return 0;
+        if(this.isBombOnPosition(x+1, y) === true)
+            surrBombs++;
+        if(this.isBombPosition(x, y+1) === true)
+            surrBomb++;
+        if(this.isBombPosition(x+1, y+1) === true)
+            surrBomb++;
+
+        return surrBomb;
     }
 
     /**
