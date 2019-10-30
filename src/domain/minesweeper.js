@@ -2,6 +2,9 @@ import {field} from "./models/field.js";
 import {BombLocation} from "./models/BombLocation.js";
 
 export class Minesweeper {
+    y = 0;
+    x = 0;
+
 
     /**
      * @param {number} rows
@@ -37,6 +40,7 @@ export class Minesweeper {
             this.bombLocation.push(coordinate);
         }
         console.log(this.bombLocation);
+
     }
 
 
@@ -79,13 +83,25 @@ export class Minesweeper {
         let surrBomb = 0;
 
         if(this.isBombOnPosition(x+1, y) === true)
-            surrBombs++;
-        if(this.isBombPosition(x, y+1) === true)
             surrBomb++;
-        if(this.isBombPosition(x+1, y+1) === true)
+        if (this.isBombOnPosition(x, y+1)  === true)
+            surrBomb++;
+        if (this.isBombOnPosition(x+1, y+1)  === true)
+            surrBomb++;
+        if (this.isBombOnPosition(x-1, y)  === true)
+            surrBomb++;
+        if (this.isBombOnPosition(x, y-1)  === true)
+            surrBomb++;
+        if (this.isBombOnPosition(x-1, y-1)  === true)
+            surrBomb++;
+        if (this.isBombOnPosition(x+1, y-1)  === true)
+            surrBomb++;
+        if (this.isBombOnPosition(x-1, y+1)  === true)
             surrBomb++;
 
-        return surrBomb;
+        return surrBomb++;
+
+
     }
 
     /**
@@ -104,6 +120,7 @@ export class Minesweeper {
         return false;
     }
 
+
     /**
      * TODO: IMPLEMENT THIS
      * Reveals the field and all empty connected fields around it.
@@ -121,6 +138,37 @@ export class Minesweeper {
             this.isGameOver = true;
             this.array[x][y] = field.hidden;
         }
+
+        if (this.array[x][y] === field.hidden)
+            this.array[x][y] = field.visible;
+
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x][y+1] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x+1][y] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x+1][y+1] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x-1][y] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x][y-1] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x-1][y-1] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x-1][y+1] = field.visible;
+
+        if (this.getAmountOfSurroundingBombs(x,y) === 0)
+            this.array[x+1][y-1] = field.visible;
+
+        
+
     }
 
     /**

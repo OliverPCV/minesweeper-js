@@ -85,7 +85,7 @@ export class MinesweeperGUI {
                 case field.hidden:
                     return '<div class="hidden">&nbsp;</div>';
                 case field.visible:
-                    const amount = this.game.getAmountOfSurroundingBombs(y, x); //Return number
+                    const amount = this.game.getAmountOfSurroundingBombs(y,x); //Return number
                     return `
                         <div class="empty">
                             ${amount === 0 ? ' ' : amount}
