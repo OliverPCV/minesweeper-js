@@ -2,8 +2,6 @@ import {field} from "./models/field.js";
 import {BombLocation} from "./models/BombLocation.js";
 
 export class Minesweeper {
-    y = 0;
-    x = 0;
 
 
     /**
@@ -80,26 +78,33 @@ export class Minesweeper {
      * @return {number}
      */
     getAmountOfSurroundingBombs(x, y) {
-        let surrBomb = 0;
+        let surrBombs = 0;
 
         if(this.isBombOnPosition(x+1, y) === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x, y+1)  === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x+1, y+1)  === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x-1, y)  === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x, y-1)  === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x-1, y-1)  === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x+1, y-1)  === true)
-            surrBomb++;
-        if (this.isBombOnPosition(x-1, y+1)  === true)
-            surrBomb++;
+            surrBombs++;
 
-        return surrBomb++;
+        if (this.isBombOnPosition(x, y+1)  === true)
+            surrBombs++;
+
+        if (this.isBombOnPosition(x+1, y+1)  === true)
+            surrBombs++;
+
+        if (this.isBombOnPosition(x-1, y)  === true)
+            surrBombs++;
+
+        if (this.isBombOnPosition(x, y-1)  === true)
+            surrBombs++;
+
+        if (this.isBombOnPosition(x-1, y-1)  === true)
+            surrBombs++;
+
+        if (this.isBombOnPosition(x+1, y-1)  === true)
+            surrBombs++;
+
+        if (this.isBombOnPosition(x-1, y+1)  === true)
+            surrBombs++;
+
+        return surrBombs;
 
 
     }
@@ -129,47 +134,49 @@ export class Minesweeper {
      * @param {number} y
      */
     reveal(x, y) {
-        if(this.array[x][y] === field.flag || this.array[y][x] === field.question_mark) {
-            this.array[x][y] !== field.visible;
-        }else
-            this.array[x][y] = field.visible;
-
-        if (this.isBombOnPosition(x,y) === true) {
+        if (this.isBombOnPosition(x, y) === true)
+        {
             this.isGameOver = true;
             this.array[x][y] = field.hidden;
         }
+        this.revealSurrCells(x, y);
+    }
 
+
+    revealSurrCells(x,y) {
         if (this.array[x][y] === field.hidden)
+        {
             this.array[x][y] = field.visible;
 
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x][y+1] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x+1][y] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x+1][y+1] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x-1][y] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x][y-1] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x-1][y-1] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x-1][y+1] = field.visible;
-
-        if (this.getAmountOfSurroundingBombs(x,y) === 0)
-            this.array[x+1][y-1] = field.visible;
-
-        
-
+            if (this.getAmountOfSurroundingBombs(x, y) === 0)
+            {
+                if (x + 1 >= 0 && x + 1 < this.rows && y >= 0 && y < this.columns)
+                {
+                    this.revealSurrCells(x + 1, y);
+                }
+                if (x >= 0 && x < this.rows && y + 1 >= 0 && y + 1 < this.columns)
+                {
+                    this.revealSurrCells(x, y + 1);
+                }
+                if (x - 1 >= 0 && x - 1 < this.rows && y >= 0 && y + 1 < this.columns)
+                {
+                    this.revealSurrCells(x - 1, y);
+                }
+                if (x >= 0 && x < this.rows && y - 1 >= 0 && y - 1 < this.columns)
+                {
+                    this.revealSurrCells(x, y - 1);
+                }
+            }
+        }
     }
+
+
+
+
+
+
+
+
 
     /**
      * TODO: IMPLEMENT THIS
@@ -195,6 +202,7 @@ export class Minesweeper {
      * @returns {boolean}
      */
     didWin() {
+
 
             return false;
 
